@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spanish Trainer</title>
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="manifest" href="./manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Spanish Trainer">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    .app {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      margin-top: 10px;
+    }
+    textarea, select, input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      margin-bottom: 12px;
+    }
+    button {
+      background: #0f766e;
+      color: white;
+      font-weight: 700;
+      border: none;
+      min-height: 48px;
+    }
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .status {
+      font-size: 15px;
+      color: #4b5563;
+      margin: 8px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>Spanish Trainer</h1>
+
+    <section class="card">
+      <label for="phrases">Enter phrases, one per line, like: English | Spanish</label>
+      <textarea id="phrases" rows="8">Good morning | Buenos días
+How are you? | ¿Cómo estás?
+I would like a coffee | Me gustaría un café</textarea>
+    </section>
+
+    <section class="card">
+      <label for="englishVoice">English voice</label>
+      <select id="englishVoice"></select>
+
+      <label for="spanishVoice">Spanish voice</label>
+      <select id="spanishVoice"></select>
+
+      <label for="rate">Speed</label>
+      <input id="rate" type="range" min="0.5" max="1.5" step="0.1" value="1" />
+
+      <label for="repeatCount">Repetitions</label>
+      <input id="repeatCount" type="number" min="1" max="10" value="1" />
+
+      <label for="delayMs">Pause between lines in milliseconds</label>
+      <input id="delayMs" type="number" min="0" step="100" value="700" />
+    </section>
+
+    <section class="card">
+      <div class="button-grid">
+        <button id="playBtn">Play</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="resumeBtn">Resume</button>
+        <button id="stopBtn">Stop</button>
+      </div>
+      <p class="status" id="status">Status: Idle</p>
+      <p class="status" id="currentPhrase">Current phrase: None</p>
+    </section>
+  </main>
+
+  <script>
+    const synth = window.speechSynthesis;
+    const englishVoiceSelect = document.getElementById("englishVoice");
+    const spanishVoiceSelect = document.getElementById("spanishVoice");
+    const phrasesInput = document.getElementById("phrases");
+    const rateInput = document.getElementById("rate");
+    const repeatCountInput = document.getElementById("repeatCount");
+    const delayMsInput = document.getElementById("delayMs");
+    const statusEl = document.getElementById("status");
+    const currentPhraseEl = document.getElementById("currentPhrase");
+
+    let voices = [];
+    let stopped = false;
+
+    function setStatus(text) {
+      statusEl.textContent = "Status: " + text;
+    }
+
+    function setCurrentPhrase(text) {
+      currentPhraseEl.textContent = "Current phrase: " + text;
+    }
+
+    function loadVoices() {
+      voices = synth.getVoices();
+      englishVoiceSelect.innerHTML = "";
+      spanishVoiceSelect.innerHTML = "";
+
+      const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("en"));
+      const spanishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("es"));
+
+      englishVoices.forEach(voice => {
+        const option = document.createElement("option");
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        englishVoiceSelect.appendChild(option);
+      });
+
+      spanishVoices.forEach(voice => {
+        const option = document.createElement("option");
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        spanishVoiceSelect.appendChild(option);
+      });
+    }
+
+    function getVoiceByName(name) {
+      return voices.find(v => v.name === name);
+    }
+
+    function parsePhrases(raw) {
+      return raw
+        .split("\n")
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+          const parts = line.split("|");
+          return {
+            english: (parts[0] || "").trim(),
+            spanish: (parts[1] || "").trim()
+          };
+        })
+        .filter(item => item.english && item.spanish);
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function speakText(text, voice, lang, rate) {
+      return new Promise((resolve, reject) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.text = text;
+        utterance.voice = voice || null;
+        utterance.lang = lang;
+        utterance.rate = rate;
+        utterance.onend = () => resolve();
+        utterance.onerror = (event) => reject(event);
+        synth.speak(utterance);
+      });
+    }
+
+    async function playList() {
+      stopped = false;
+      synth.cancel();
+
+      const phrases = parsePhrases(phrasesInput.value);
+      const rate = Number(rateInput.value);
+      const repeats = Number(repeatCountInput.value);
+      const delay = Number(delayMsInput.value);
+
+      const englishVoice = getVoiceByName(englishVoiceSelect.value);
+      const spanishVoice = getVoiceByName(spanishVoiceSelect.value);
+
+      if (!phrases.length) {
+        setStatus("No valid phrases found");
+        return;
+      }
+
+      setStatus("Playing");
+
+      try {
+        for (const phrase of phrases) {
+          for (let i = 0; i < repeats; i++) {
+            if (stopped) return;
+
+            setCurrentPhrase("English: " + phrase.english);
+            await speakText(phrase.english, englishVoice, "en-US", rate);
+
+            if (stopped) return;
+            await wait(delay);
+
+            setCurrentPhrase("Spanish: " + phrase.spanish);
+            await speakText(phrase.spanish, spanishVoice, "es-ES", rate);
+
+            if (stopped) return;
+            await wait(delay);
+          }
+        }
+
+        setStatus("Finished");
+        setCurrentPhrase("Done");
+      } catch (error) {
+        setStatus("Playback error");
+        console.error(error);
+      }
+    }
+
+    document.getElementById("playBtn").addEventListener("click", playList);
+    document.getElementById("pauseBtn").addEventListener("click", () => {
+      synth.pause();
+      setStatus("Paused");
+    });
+    document.getElementById("resumeBtn").addEventListener("click", () => {
+      synth.resume();
+      setStatus("Resumed");
+    });
+    document.getElementById("stopBtn").addEventListener("click", () => {
+      stopped = true;
+      synth.cancel();
+      setStatus("Stopped");
+      setCurrentPhrase("Stopped");
+    });
+
+    loadVoices();
+    if ("onvoiceschanged" in synth) {
+      synth.onvoiceschanged = loadVoices;
+    }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js");
+    }
+  </script>
+</body>
+</html>
