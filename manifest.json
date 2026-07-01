@@ -1,11 +1,25 @@
 {
-  "name": "Spanish Trainer",
-  "short_name": "Spanish Trainer",
-  "id": "/LOTG/",
-  "start_url": "/LOTG/index.html",
+  "name": "LOTG",
+  "short_name": "LOTG",
+  "description": "Learn languages on the go!",
+  "start_url": "/LOTG/",
   "scope": "/LOTG/",
   "display": "standalone",
-  "background_color": "#f5f7fb",
-  "theme_color": "#0f766e",
-  "icons": []
+  "background_color": "#f5efe6",
+  "theme_color": "#6f8f73",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/LOTG/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/LOTG/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
