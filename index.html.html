@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spanish Trainer</title>
   <meta name="theme-color" content="#0f766e" />
-  <link rel="manifest" href="./manifest.json">
+  <link rel="manifest" href="/LOTG/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Spanish Trainer">
   <style>
@@ -253,8 +253,8 @@ I would like a coffee | Me gustaría un café</textarea>
       synth.onvoiceschanged = loadVoices;
     }
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js");
-    }
+  navigator.serviceWorker.register("/LOTG/sw.js", { scope: "/LOTG/" });
+}
   </script>
 </body>
 </html>
