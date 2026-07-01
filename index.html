@@ -4,91 +4,400 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spanish Trainer</title>
-  <meta name="theme-color" content="#0f766e" />
-  <link rel="manifest" href="/LOTG/manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Spanish Trainer">
+  <meta name="theme-color" content="#6f8f73" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Spanish Trainer" />
+  <link rel="manifest" href="/LOTG/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #f5efe6;
+      --bg-2: #efe6db;
+      --surface: rgba(255, 251, 246, 0.88);
+      --surface-strong: #fffaf4;
+      --surface-soft: #f7f1e8;
+      --text: #2c241d;
+      --muted: #766a5e;
+      --border: rgba(44, 36, 29, 0.10);
+      --accent: #6f8f73;
+      --accent-dark: #58755d;
+      --accent-soft: #dce7db;
+      --shadow: 0 10px 30px rgba(76, 58, 42, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f5f7fb;
-      color: #111827;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #f9f4ec 0%, transparent 35%),
+        radial-gradient(circle at top right, #ede5d8 0%, transparent 30%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
     }
+
     .app {
-      max-width: 680px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 20px 16px 48px;
     }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+
+    .hero {
+      padding: 8px 4px 20px;
     }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(44, 36, 29, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
     h1 {
-      font-size: 28px;
-      margin-bottom: 12px;
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
     }
+
+    .subhead {
+      margin: 12px 0 0;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .now-playing {
+      background: linear-gradient(180deg, rgba(255,252,248,0.95), rgba(247,241,232,0.92));
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .phrase-panel {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(44, 36, 29, 0.07);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .phrase-label {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .phrase-text {
+      font-size: clamp(1.2rem, 3.5vw, 1.9rem);
+      line-height: 1.25;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-stat {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(44, 36, 29, 0.07);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .mini-stat .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .mini-stat .value {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
     label {
       display: block;
+      margin: 0 0 8px;
       font-weight: 700;
-      margin-bottom: 6px;
-      margin-top: 10px;
+      font-size: 14px;
     }
-    textarea, select, input, button {
+
+    textarea, select, input {
       width: 100%;
       box-sizing: border-box;
-      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(44, 36, 29, 0.12);
+      background: rgba(255,255,255,0.82);
+      color: var(--text);
+      padding: 13px 14px;
       font-size: 16px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
-    button {
-      background: #0f766e;
-      color: white;
-      font-weight: 700;
-      border: none;
-      min-height: 48px;
+
+    textarea:focus, select:focus, input:focus {
+      border-color: rgba(111, 143, 115, 0.65);
+      box-shadow: 0 0 0 4px rgba(111, 143, 115, 0.12);
+      background: rgba(255,255,255,0.96);
     }
-    button.secondary {
-      background: #e5e7eb;
-      color: #111827;
+
+    textarea {
+      min-height: 270px;
+      resize: vertical;
+      line-height: 1.5;
     }
-    .button-grid {
+
+    .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
     }
-    .button-grid-3 {
+
+    .controls-grid-3 {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
-    .status {
+
+    .controls-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      min-height: 50px;
+      padding: 12px 16px;
       font-size: 15px;
-      color: #4b5563;
-      margin: 8px 0 0;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, color 140ms ease;
     }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 22px rgba(111, 143, 115, 0.26);
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,0.72);
+      color: var(--text);
+      border: 1px solid rgba(44, 36, 29, 0.10);
+    }
+
+    .secondary:hover {
+      background: rgba(255,255,255,0.95);
+    }
+
+    .range-wrap {
+      margin-bottom: 12px;
+    }
+
     .value-row {
       display: flex;
       justify-content: space-between;
       gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      margin: 8px 2px 0;
+    }
+
+    .hint {
+      color: var(--muted);
       font-size: 14px;
-      color: #4b5563;
-      margin: -6px 0 12px;
+      line-height: 1.5;
+      margin: 0 0 12px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2,
+      .controls-grid-3,
+      .controls-grid-2,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .app {
+        padding: 16px 14px 36px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      button {
+        min-height: 52px;
+      }
     }
   </style>
 </head>
 <body>
   <main class="app">
-    <h1>Spanish Trainer</h1>
+    <section class="hero">
+      <div class="eyebrow">Warm, simple phrase practice</div>
+      <h1>Spanish Trainer</h1>
+      <p class="subhead">Practice phrases by ear with a calmer, friendlier study flow. Move back or forward through phrases, adjust speeds, and keep the current line front and center.</p>
+    </section>
 
-    <section class="card">
-      <label for="phrases">Enter phrases, one per line, like: English | Spanish</label>
-      <textarea id="phrases" rows="14">Close the refrigerator. | Cierra el refrigerador.
+    <div class="stack">
+      <section class="card now-playing">
+        <p class="section-title">Now playing</p>
+        <div class="phrase-panel">
+          <div class="phrase-label">Current phrase</div>
+          <p class="phrase-text" id="currentPhraseDisplay">Ready to start your phrase set.</p>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini-stat">
+            <div class="label">Status</div>
+            <div class="value" id="statusValue">Idle</div>
+          </div>
+          <div class="mini-stat">
+            <div class="label">Mode</div>
+            <div class="value" id="currentModeValue">None</div>
+          </div>
+          <div class="mini-stat">
+            <div class="label">Position</div>
+            <div class="value" id="positionValue">0 / 0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="section-title">Playback controls</p>
+        <div class="controls-grid-3">
+          <button id="prevBtn" class="secondary">Back</button>
+          <button id="playBtn" class="primary">Play</button>
+          <button id="nextBtn" class="secondary">Next</button>
+        </div>
+        <div class="controls-grid-3" style="margin-top: 10px;">
+          <button id="pauseBtn" class="secondary">Pause</button>
+          <button id="resumeBtn" class="secondary">Resume</button>
+          <button id="stopBtn" class="secondary">Stop</button>
+        </div>
+        <div class="controls-grid-3" style="margin-top: 10px;">
+          <button id="slowerBtn" class="secondary">Slower</button>
+          <button id="backWordBtn" class="secondary">Back One Word</button>
+          <button id="fasterBtn" class="secondary">Faster</button>
+        </div>
+        <p class="footer-note">Back and Next move phrase-by-phrase. Back One Word works within the current spoken line.</p>
+      </section>
+
+      <section class="card">
+        <p class="section-title">Voice and pacing</p>
+        <div class="grid-2">
+          <div>
+            <label for="englishVoice">English voice</label>
+            <select id="englishVoice"></select>
+          </div>
+          <div>
+            <label for="spanishVoice">Spanish voice</label>
+            <select id="spanishVoice"></select>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 8px;">
+          <div class="range-wrap">
+            <label for="englishRate">English speed</label>
+            <input id="englishRate" type="range" min="0.5" max="1.5" step="0.1" value="1.0" />
+            <div class="value-row"><span>Slower</span><span id="englishRateValue">1.0x</span><span>Faster</span></div>
+          </div>
+          <div class="range-wrap">
+            <label for="spanishRate">Spanish speed</label>
+            <input id="spanishRate" type="range" min="0.5" max="1.5" step="0.1" value="0.8" />
+            <div class="value-row"><span>Slower</span><span id="spanishRateValue">0.8x</span><span>Faster</span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label for="englishRepeatCount">English repetitions</label>
+            <input id="englishRepeatCount" type="number" min="1" max="10" value="1" />
+          </div>
+          <div>
+            <label for="spanishRepeatCount">Spanish repetitions</label>
+            <input id="spanishRepeatCount" type="number" min="1" max="10" value="2" />
+          </div>
+        </div>
+
+        <div style="margin-top: 8px;">
+          <label for="delayMs">Pause between lines in milliseconds</label>
+          <input id="delayMs" type="number" min="0" step="100" value="700" />
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="section-title">Phrase list</p>
+        <p class="hint">Enter one phrase per line using this format: English | Spanish</p>
+        <label for="phrases">Your phrases</label>
+        <textarea id="phrases">Close the refrigerator. | Cierra el refrigerador.
 I need to brush my teeth. | Necesito cepillarme los dientes.
 I need to take a shower. | Necesito ducharme.
 I'd like some water. | Me gustaría un poco de agua.
@@ -101,51 +410,8 @@ I'm hungry. | Tengo hambre.
 Good morning. | Buenos días.
 Good afternoon. | Buenas tardes.
 Good night. | Buenas noches.</textarea>
-    </section>
-
-    <section class="card">
-      <label for="englishVoice">English voice</label>
-      <select id="englishVoice"></select>
-
-      <label for="spanishVoice">Spanish voice</label>
-      <select id="spanishVoice"></select>
-
-      <label for="englishRate">English speed</label>
-      <input id="englishRate" type="range" min="0.5" max="1.5" step="0.1" value="1" />
-      <div class="value-row"><span>Slower</span><span id="englishRateValue">1.0x</span><span>Faster</span></div>
-
-      <label for="spanishRate">Spanish speed</label>
-      <input id="spanishRate" type="range" min="0.5" max="1.5" step="0.1" value="0.8" />
-      <div class="value-row"><span>Slower</span><span id="spanishRateValue">0.8x</span><span>Faster</span></div>
-
-      <label for="englishRepeatCount">English repetitions</label>
-      <input id="englishRepeatCount" type="number" min="1" max="10" value="1" />
-
-      <label for="spanishRepeatCount">Spanish repetitions</label>
-      <input id="spanishRepeatCount" type="number" min="1" max="10" value="2" />
-
-      <label for="delayMs">Pause between lines in milliseconds</label>
-      <input id="delayMs" type="number" min="0" step="100" value="700" />
-    </section>
-
-    <section class="card">
-      <div class="button-grid">
-        <button id="playBtn">Play</button>
-        <button id="pauseBtn">Pause</button>
-        <button id="resumeBtn">Resume</button>
-        <button id="stopBtn">Stop</button>
-      </div>
-
-      <div class="button-grid-3">
-        <button id="slowerBtn" class="secondary">Slower</button>
-        <button id="backWordBtn" class="secondary">Back One Word</button>
-        <button id="fasterBtn" class="secondary">Faster</button>
-      </div>
-
-      <p class="status" id="status">Status: Idle</p>
-      <p class="status" id="currentPhrase">Current phrase: None</p>
-      <p class="status" id="currentMode">Current mode: None</p>
-    </section>
+      </section>
+    </div>
   </main>
 
   <script>
@@ -158,37 +424,45 @@ Good night. | Buenas noches.</textarea>
     const englishRepeatCountInput = document.getElementById("englishRepeatCount");
     const spanishRepeatCountInput = document.getElementById("spanishRepeatCount");
     const delayMsInput = document.getElementById("delayMs");
-    const statusEl = document.getElementById("status");
-    const currentPhraseEl = document.getElementById("currentPhrase");
-    const currentModeEl = document.getElementById("currentMode");
     const englishRateValueEl = document.getElementById("englishRateValue");
     const spanishRateValueEl = document.getElementById("spanishRateValue");
+    const currentPhraseDisplay = document.getElementById("currentPhraseDisplay");
+    const statusValue = document.getElementById("statusValue");
+    const currentModeValue = document.getElementById("currentModeValue");
+    const positionValue = document.getElementById("positionValue");
 
     let voices = [];
     let stopped = false;
     let paused = false;
 
-    let activePhrase = null;
     let activeLang = null;
     let activeVoice = null;
-    let activeRate = 1;
     let activeText = "";
     let currentCharIndex = 0;
-    let lastBoundaryIndex = 0;
     let currentUtterance = null;
     let activeRateInput = null;
     let playbackToken = 0;
+    let currentPhraseIndex = 0;
+    let phraseAdvanceRequested = 0;
 
     function setStatus(text) {
-      statusEl.textContent = "Status: " + text;
+      statusValue.textContent = text;
     }
 
     function setCurrentPhrase(text) {
-      currentPhraseEl.textContent = "Current phrase: " + text;
+      currentPhraseDisplay.textContent = text;
     }
 
     function setCurrentMode(text) {
-      currentModeEl.textContent = "Current mode: " + text;
+      currentModeValue.textContent = text;
+    }
+
+    function updatePosition(total) {
+      if (!total) {
+        positionValue.textContent = "0 / 0";
+        return;
+      }
+      positionValue.textContent = `${Math.min(currentPhraseIndex + 1, total)} / ${total}`;
     }
 
     function updateRateLabels() {
@@ -253,6 +527,20 @@ Good night. | Buenas noches.</textarea>
         .filter(item => item.english && item.spanish);
     }
 
+    function refreshPreview() {
+      const phrases = parsePhrases(phrasesInput.value);
+      if (!phrases.length) {
+        setCurrentPhrase("Ready to start your phrase set.");
+        setCurrentMode("None");
+        updatePosition(0);
+        return;
+      }
+      currentPhraseIndex = Math.max(0, Math.min(currentPhraseIndex, phrases.length - 1));
+      const phrase = phrases[currentPhraseIndex];
+      setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
+      updatePosition(phrases.length);
+    }
+
     function wait(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -268,6 +556,15 @@ Good night. | Buenas noches.</textarea>
       });
     }
 
+    function resetSpeechState() {
+      currentUtterance = null;
+      activeText = "";
+      activeLang = null;
+      activeVoice = null;
+      activeRateInput = null;
+      currentCharIndex = 0;
+    }
+
     function speakText(text, voice, lang, rate, startIndex = 0, rateInputRef = null, token = playbackToken) {
       return new Promise((resolve, reject) => {
         const remainingText = text.slice(startIndex);
@@ -275,13 +572,10 @@ Good night. | Buenas noches.</textarea>
 
         currentUtterance = utterance;
         activeText = text;
-        activePhrase = text;
         activeLang = lang;
         activeVoice = voice;
-        activeRate = rate;
         activeRateInput = rateInputRef;
         currentCharIndex = startIndex;
-        lastBoundaryIndex = startIndex;
 
         if (voice) utterance.voice = voice;
         utterance.lang = lang;
@@ -289,27 +583,19 @@ Good night. | Buenas noches.</textarea>
 
         utterance.onboundary = (event) => {
           if (event.name === "word") {
-            lastBoundaryIndex = startIndex + event.charIndex;
-            currentCharIndex = lastBoundaryIndex;
+            currentCharIndex = startIndex + event.charIndex;
           }
         };
 
         utterance.onend = () => {
           if (token !== playbackToken) return resolve();
-          currentUtterance = null;
-          currentCharIndex = 0;
-          lastBoundaryIndex = 0;
-          activeText = "";
-          activePhrase = null;
-          activeLang = null;
-          activeVoice = null;
-          activeRateInput = null;
+          resetSpeechState();
           resolve();
         };
 
         utterance.onerror = (event) => {
           if (token !== playbackToken) return resolve();
-          currentUtterance = null;
+          resetSpeechState();
           reject(event);
         };
 
@@ -338,8 +624,7 @@ Good night. | Buenas noches.</textarea>
       synth.cancel();
 
       setTimeout(() => {
-        speakText(text, voice, lang, newRate, startIndex, rateInputRef, playbackToken)
-          .catch(console.error);
+        speakText(text, voice, lang, newRate, startIndex, rateInputRef, playbackToken).catch(console.error);
       }, 80);
     }
 
@@ -356,9 +641,25 @@ Good night. | Buenas noches.</textarea>
       synth.cancel();
 
       setTimeout(() => {
-        speakText(text, voice, lang, rate, newIndex, rateInputRef, playbackToken)
-          .catch(console.error);
+        speakText(text, voice, lang, rate, newIndex, rateInputRef, playbackToken).catch(console.error);
       }, 80);
+    }
+
+    function goToPhrase(offset) {
+      const phrases = parsePhrases(phrasesInput.value);
+      if (!phrases.length) return;
+
+      currentPhraseIndex = Math.max(0, Math.min(phrases.length - 1, currentPhraseIndex + offset));
+      const phrase = phrases[currentPhraseIndex];
+
+      setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
+      setCurrentMode("Ready");
+      updatePosition(phrases.length);
+
+      if (currentUtterance) {
+        phraseAdvanceRequested = offset;
+        synth.cancel();
+      }
     }
 
     async function playList() {
@@ -377,48 +678,67 @@ Good night. | Buenas noches.</textarea>
       const spanishVoice = getVoiceByName(spanishVoiceSelect.value);
 
       if (!phrases.length) {
-        setStatus("No valid phrases found");
+        setStatus("No valid phrases");
+        setCurrentPhrase("Add phrases in the format English | Spanish.");
+        updatePosition(0);
         return;
       }
 
+      currentPhraseIndex = Math.max(0, Math.min(currentPhraseIndex, phrases.length - 1));
+      updatePosition(phrases.length);
       setStatus("Playing");
 
       try {
-        for (const phrase of phrases) {
+        while (currentPhraseIndex < phrases.length) {
+          const phrase = phrases[currentPhraseIndex];
+          phraseAdvanceRequested = 0;
+          updatePosition(phrases.length);
+
           for (let i = 0; i < englishRepeats; i++) {
             if (stopped || token !== playbackToken) return;
-
             const okToContinue = await waitWhilePausedOrStopped(token);
             if (!okToContinue) return;
 
-            const englishRate = Number(englishRateInput.value);
             setCurrentMode(`English ${i + 1} of ${englishRepeats}`);
-            setCurrentPhrase("English: " + phrase.english);
-            await speakText(phrase.english, englishVoice, "en-US", englishRate, 0, englishRateInput, token);
+            setCurrentPhrase(phrase.english);
+            await speakText(phrase.english, englishVoice, "en-US", Number(englishRateInput.value), 0, englishRateInput, token);
 
+            if (phraseAdvanceRequested !== 0) break;
             if (stopped || token !== playbackToken) return;
             await wait(delay);
+          }
+
+          if (phraseAdvanceRequested !== 0) {
+            currentPhraseIndex = Math.max(0, Math.min(phrases.length - 1, currentPhraseIndex + phraseAdvanceRequested));
+            continue;
           }
 
           for (let i = 0; i < spanishRepeats; i++) {
             if (stopped || token !== playbackToken) return;
-
             const okToContinue = await waitWhilePausedOrStopped(token);
             if (!okToContinue) return;
 
-            const spanishRate = Number(spanishRateInput.value);
             setCurrentMode(`Spanish ${i + 1} of ${spanishRepeats}`);
-            setCurrentPhrase("Spanish: " + phrase.spanish);
-            await speakText(phrase.spanish, spanishVoice, "es-ES", spanishRate, 0, spanishRateInput, token);
+            setCurrentPhrase(phrase.spanish);
+            await speakText(phrase.spanish, spanishVoice, "es-ES", Number(spanishRateInput.value), 0, spanishRateInput, token);
 
+            if (phraseAdvanceRequested !== 0) break;
             if (stopped || token !== playbackToken) return;
             await wait(delay);
           }
+
+          if (phraseAdvanceRequested !== 0) {
+            currentPhraseIndex = Math.max(0, Math.min(phrases.length - 1, currentPhraseIndex + phraseAdvanceRequested));
+            continue;
+          }
+
+          currentPhraseIndex += 1;
         }
 
         setStatus("Finished");
-        setCurrentPhrase("Done");
+        setCurrentPhrase("Nice work — you made it through the phrase set.");
         setCurrentMode("Complete");
+        updatePosition(phrases.length);
       } catch (error) {
         setStatus("Playback error");
         console.error(error);
@@ -444,17 +764,18 @@ Good night. | Buenas noches.</textarea>
       paused = false;
       playbackToken += 1;
       synth.cancel();
+      resetSpeechState();
       setStatus("Stopped");
-      setCurrentPhrase("Stopped");
       setCurrentMode("Stopped");
-      currentUtterance = null;
-      activeText = "";
-      activePhrase = null;
-      activeLang = null;
-      activeVoice = null;
-      activeRateInput = null;
-      currentCharIndex = 0;
-      lastBoundaryIndex = 0;
+      refreshPreview();
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      goToPhrase(-1);
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      goToPhrase(1);
     });
 
     document.getElementById("slowerBtn").addEventListener("click", () => {
@@ -485,14 +806,18 @@ Good night. | Buenas noches.</textarea>
       }
     });
 
+    phrasesInput.addEventListener("input", refreshPreview);
+
     updateRateLabels();
     loadVoices();
+    refreshPreview();
 
     if ("onvoiceschanged" in synth) {
       synth.onvoiceschanged = loadVoices;
     }
 
     setTimeout(loadVoices, 500);
+    setTimeout(loadVoices, 1200);
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/LOTG/sw.js", { scope: "/LOTG/" });
