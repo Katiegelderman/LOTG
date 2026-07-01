@@ -1,1 +1,1 @@
-# Spanish-App
+# LOTG - Spanish
