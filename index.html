@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spanish Trainer</title>
+  <title>Spanish Trainer</title>
   <meta name="theme-color" content="#0f766e" />
   <link rel="manifest" href="/LOTG/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,15 +53,32 @@
       border: none;
       min-height: 48px;
     }
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
     .button-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .button-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 12px;
     }
     .status {
       font-size: 15px;
       color: #4b5563;
       margin: 8px 0 0;
+    }
+    .value-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      color: #4b5563;
+      margin: -6px 0 12px;
     }
   </style>
 </head>
@@ -71,34 +88,44 @@
 
     <section class="card">
       <label for="phrases">Enter phrases, one per line, like: English | Spanish</label>
-      <textarea id="phrases" rows="8">Good morning | Buenos días
-How are you? | ¿Cómo estás?
-I would like a coffee | Me gustaría un café</textarea>
+      <textarea id="phrases" rows="14">Close the refrigerator. | Cierra el refrigerador.
+I need to brush my teeth. | Necesito cepillarme los dientes.
+I need to take a shower. | Necesito ducharme.
+I'd like some water. | Me gustaría un poco de agua.
+I'm heading out for a few hours. | Voy a salir por unas horas.
+Can you open the door? | ¿Puedes abrir la puerta?
+Can you close the door? | ¿Puedes cerrar la puerta?
+What's the weather like? | ¿Qué tiempo hace?
+I'm thirsty. | Tengo sed.
+I'm hungry. | Tengo hambre.
+Good morning. | Buenos días.
+Good afternoon. | Buenas tardes.
+Good night. | Buenas noches.</textarea>
     </section>
 
-<section class="card">
-  <label for="englishVoice">English voice</label>
-  <select id="englishVoice"></select>
+    <section class="card">
+      <label for="englishVoice">English voice</label>
+      <select id="englishVoice"></select>
 
-  <label for="spanishVoice">Spanish voice</label>
-  <select id="spanishVoice"></select>
+      <label for="spanishVoice">Spanish voice</label>
+      <select id="spanishVoice"></select>
 
-  <label for="englishRate">English speed</label>
-  <input id="englishRate" type="range" min="0.5" max="1.5" step="0.1" value="1" />
+      <label for="englishRate">English speed</label>
+      <input id="englishRate" type="range" min="0.5" max="1.5" step="0.1" value="1" />
+      <div class="value-row"><span>Slower</span><span id="englishRateValue">1.0x</span><span>Faster</span></div>
 
-  <label for="spanishRate">Spanish speed</label>
-  <input id="spanishRate" type="range" min="0.5" max="1.5" step="0.1" value="0.8" />
+      <label for="spanishRate">Spanish speed</label>
+      <input id="spanishRate" type="range" min="0.5" max="1.5" step="0.1" value="0.8" />
+      <div class="value-row"><span>Slower</span><span id="spanishRateValue">0.8x</span><span>Faster</span></div>
 
-  <label for="englishRepeatCount">English repetitions</label>
-  <input id="englishRepeatCount" type="number" min="1" max="10" value="1" />
+      <label for="englishRepeatCount">English repetitions</label>
+      <input id="englishRepeatCount" type="number" min="1" max="10" value="1" />
 
-  <label for="spanishRepeatCount">Spanish repetitions</label>
-  <input id="spanishRepeatCount" type="number" min="1" max="10" value="2" />
+      <label for="spanishRepeatCount">Spanish repetitions</label>
+      <input id="spanishRepeatCount" type="number" min="1" max="10" value="2" />
 
-  <label for="delayMs">Pause between lines in milliseconds</label>
-  <input id="delayMs" type="number" min="0" step="100" value="700" />
-
-  
+      <label for="delayMs">Pause between lines in milliseconds</label>
+      <input id="delayMs" type="number" min="0" step="100" value="700" />
     </section>
 
     <section class="card">
@@ -108,8 +135,16 @@ I would like a coffee | Me gustaría un café</textarea>
         <button id="resumeBtn">Resume</button>
         <button id="stopBtn">Stop</button>
       </div>
+
+      <div class="button-grid-3">
+        <button id="slowerBtn" class="secondary">Slower</button>
+        <button id="backWordBtn" class="secondary">Back One Word</button>
+        <button id="fasterBtn" class="secondary">Faster</button>
+      </div>
+
       <p class="status" id="status">Status: Idle</p>
       <p class="status" id="currentPhrase">Current phrase: None</p>
+      <p class="status" id="currentMode">Current mode: None</p>
     </section>
   </main>
 
@@ -118,16 +153,31 @@ I would like a coffee | Me gustaría un café</textarea>
     const englishVoiceSelect = document.getElementById("englishVoice");
     const spanishVoiceSelect = document.getElementById("spanishVoice");
     const phrasesInput = document.getElementById("phrases");
-   const englishRateInput = document.getElementById("englishRate");
-const spanishRateInput = document.getElementById("spanishRate");
-const englishRepeatCountInput = document.getElementById("englishRepeatCount");
-const spanishRepeatCountInput = document.getElementById("spanishRepeatCount");
+    const englishRateInput = document.getElementById("englishRate");
+    const spanishRateInput = document.getElementById("spanishRate");
+    const englishRepeatCountInput = document.getElementById("englishRepeatCount");
+    const spanishRepeatCountInput = document.getElementById("spanishRepeatCount");
     const delayMsInput = document.getElementById("delayMs");
     const statusEl = document.getElementById("status");
     const currentPhraseEl = document.getElementById("currentPhrase");
+    const currentModeEl = document.getElementById("currentMode");
+    const englishRateValueEl = document.getElementById("englishRateValue");
+    const spanishRateValueEl = document.getElementById("spanishRateValue");
 
     let voices = [];
     let stopped = false;
+    let paused = false;
+
+    let activePhrase = null;
+    let activeLang = null;
+    let activeVoice = null;
+    let activeRate = 1;
+    let activeText = "";
+    let currentCharIndex = 0;
+    let lastBoundaryIndex = 0;
+    let currentUtterance = null;
+    let activeRateInput = null;
+    let playbackToken = 0;
 
     function setStatus(text) {
       statusEl.textContent = "Status: " + text;
@@ -137,27 +187,51 @@ const spanishRepeatCountInput = document.getElementById("spanishRepeatCount");
       currentPhraseEl.textContent = "Current phrase: " + text;
     }
 
+    function setCurrentMode(text) {
+      currentModeEl.textContent = "Current mode: " + text;
+    }
+
+    function updateRateLabels() {
+      englishRateValueEl.textContent = Number(englishRateInput.value).toFixed(1) + "x";
+      spanishRateValueEl.textContent = Number(spanishRateInput.value).toFixed(1) + "x";
+    }
+
     function loadVoices() {
       voices = synth.getVoices();
+
       englishVoiceSelect.innerHTML = "";
       spanishVoiceSelect.innerHTML = "";
 
-      const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("en"));
-      const spanishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("es"));
+      const englishVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("en"));
+      const spanishVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
 
-      englishVoices.forEach(voice => {
+      if (englishVoices.length === 0) {
         const option = document.createElement("option");
-        option.value = voice.name;
-        option.textContent = `${voice.name} (${voice.lang})`;
+        option.value = "";
+        option.textContent = "Default English voice";
         englishVoiceSelect.appendChild(option);
-      });
+      } else {
+        englishVoices.forEach(voice => {
+          const option = document.createElement("option");
+          option.value = voice.name;
+          option.textContent = `${voice.name} (${voice.lang})`;
+          englishVoiceSelect.appendChild(option);
+        });
+      }
 
-      spanishVoices.forEach(voice => {
+      if (spanishVoices.length === 0) {
         const option = document.createElement("option");
-        option.value = voice.name;
-        option.textContent = `${voice.name} (${voice.lang})`;
+        option.value = "";
+        option.textContent = "Default Spanish voice";
         spanishVoiceSelect.appendChild(option);
-      });
+      } else {
+        spanishVoices.forEach(voice => {
+          const option = document.createElement("option");
+          option.value = voice.name;
+          option.textContent = `${voice.name} (${voice.lang})`;
+          spanishVoiceSelect.appendChild(option);
+        });
+      }
     }
 
     function getVoiceByName(name) {
@@ -183,28 +257,120 @@ const spanishRepeatCountInput = document.getElementById("spanishRepeatCount");
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    function speakText(text, voice, lang, rate) {
+    function waitWhilePausedOrStopped(token) {
+      return new Promise(resolve => {
+        function check() {
+          if (stopped || token !== playbackToken) return resolve(false);
+          if (!paused) return resolve(true);
+          setTimeout(check, 100);
+        }
+        check();
+      });
+    }
+
+    function speakText(text, voice, lang, rate, startIndex = 0, rateInputRef = null, token = playbackToken) {
       return new Promise((resolve, reject) => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.text = text;
-        utterance.voice = voice || null;
+        const remainingText = text.slice(startIndex);
+        const utterance = new SpeechSynthesisUtterance(remainingText);
+
+        currentUtterance = utterance;
+        activeText = text;
+        activePhrase = text;
+        activeLang = lang;
+        activeVoice = voice;
+        activeRate = rate;
+        activeRateInput = rateInputRef;
+        currentCharIndex = startIndex;
+        lastBoundaryIndex = startIndex;
+
+        if (voice) utterance.voice = voice;
         utterance.lang = lang;
         utterance.rate = rate;
-        utterance.onend = () => resolve();
-        utterance.onerror = (event) => reject(event);
+
+        utterance.onboundary = (event) => {
+          if (event.name === "word") {
+            lastBoundaryIndex = startIndex + event.charIndex;
+            currentCharIndex = lastBoundaryIndex;
+          }
+        };
+
+        utterance.onend = () => {
+          if (token !== playbackToken) return resolve();
+          currentUtterance = null;
+          currentCharIndex = 0;
+          lastBoundaryIndex = 0;
+          activeText = "";
+          activePhrase = null;
+          activeLang = null;
+          activeVoice = null;
+          activeRateInput = null;
+          resolve();
+        };
+
+        utterance.onerror = (event) => {
+          if (token !== playbackToken) return resolve();
+          currentUtterance = null;
+          reject(event);
+        };
+
         synth.speak(utterance);
       });
     }
 
+    function findPreviousWordIndex(text, index) {
+      const before = text.slice(0, Math.max(0, index - 1)).trimEnd();
+      const lastSpace = before.lastIndexOf(" ");
+      return lastSpace === -1 ? 0 : lastSpace + 1;
+    }
+
+    function restartFromCurrentPosition(newRate) {
+      if (!activeText || !activeLang || !activeRateInput) return;
+
+      activeRateInput.value = String(newRate.toFixed(1));
+      updateRateLabels();
+
+      const text = activeText;
+      const voice = activeVoice;
+      const lang = activeLang;
+      const startIndex = currentCharIndex;
+      const rateInputRef = activeRateInput;
+
+      synth.cancel();
+
+      setTimeout(() => {
+        speakText(text, voice, lang, newRate, startIndex, rateInputRef, playbackToken)
+          .catch(console.error);
+      }, 80);
+    }
+
+    function goBackOneWord() {
+      if (!activeText || !activeLang || !activeRateInput) return;
+
+      const text = activeText;
+      const voice = activeVoice;
+      const lang = activeLang;
+      const newIndex = findPreviousWordIndex(text, currentCharIndex);
+      const rate = Number(activeRateInput.value);
+      const rateInputRef = activeRateInput;
+
+      synth.cancel();
+
+      setTimeout(() => {
+        speakText(text, voice, lang, rate, newIndex, rateInputRef, playbackToken)
+          .catch(console.error);
+      }, 80);
+    }
+
     async function playList() {
       stopped = false;
+      paused = false;
+      playbackToken += 1;
+      const token = playbackToken;
       synth.cancel();
 
       const phrases = parsePhrases(phrasesInput.value);
-      const englishRate = Number(englishRateInput.value);
-const spanishRate = Number(spanishRateInput.value);
-const englishRepeats = Number(englishRepeatCountInput.value);
-const spanishRepeats = Number(spanishRepeatCountInput.value);
+      const englishRepeats = Number(englishRepeatCountInput.value);
+      const spanishRepeats = Number(spanishRepeatCountInput.value);
       const delay = Number(delayMsInput.value);
 
       const englishVoice = getVoiceByName(englishVoiceSelect.value);
@@ -219,29 +385,40 @@ const spanishRepeats = Number(spanishRepeatCountInput.value);
 
       try {
         for (const phrase of phrases) {
-  for (let i = 0; i < englishRepeats; i++) {
-    if (stopped) return;
+          for (let i = 0; i < englishRepeats; i++) {
+            if (stopped || token !== playbackToken) return;
 
-    setCurrentPhrase("English: " + phrase.english);
-    await speakText(phrase.english, englishVoice, "en-US", englishRate);
+            const okToContinue = await waitWhilePausedOrStopped(token);
+            if (!okToContinue) return;
 
-    if (stopped) return;
-    await wait(delay);
-  }
+            const englishRate = Number(englishRateInput.value);
+            setCurrentMode(`English ${i + 1} of ${englishRepeats}`);
+            setCurrentPhrase("English: " + phrase.english);
+            await speakText(phrase.english, englishVoice, "en-US", englishRate, 0, englishRateInput, token);
 
-  for (let i = 0; i < spanishRepeats; i++) {
-    if (stopped) return;
+            if (stopped || token !== playbackToken) return;
+            await wait(delay);
+          }
 
-    setCurrentPhrase("Spanish: " + phrase.spanish);
-    await speakText(phrase.spanish, spanishVoice, "es-ES", spanishRate);
+          for (let i = 0; i < spanishRepeats; i++) {
+            if (stopped || token !== playbackToken) return;
 
-    if (stopped) return;
-    await wait(delay);
-  }
-}
+            const okToContinue = await waitWhilePausedOrStopped(token);
+            if (!okToContinue) return;
+
+            const spanishRate = Number(spanishRateInput.value);
+            setCurrentMode(`Spanish ${i + 1} of ${spanishRepeats}`);
+            setCurrentPhrase("Spanish: " + phrase.spanish);
+            await speakText(phrase.spanish, spanishVoice, "es-ES", spanishRate, 0, spanishRateInput, token);
+
+            if (stopped || token !== playbackToken) return;
+            await wait(delay);
+          }
+        }
 
         setStatus("Finished");
         setCurrentPhrase("Done");
+        setCurrentMode("Complete");
       } catch (error) {
         setStatus("Playback error");
         console.error(error);
@@ -249,28 +426,77 @@ const spanishRepeats = Number(spanishRepeatCountInput.value);
     }
 
     document.getElementById("playBtn").addEventListener("click", playList);
+
     document.getElementById("pauseBtn").addEventListener("click", () => {
+      paused = true;
       synth.pause();
       setStatus("Paused");
     });
+
     document.getElementById("resumeBtn").addEventListener("click", () => {
+      paused = false;
       synth.resume();
       setStatus("Resumed");
     });
+
     document.getElementById("stopBtn").addEventListener("click", () => {
       stopped = true;
+      paused = false;
+      playbackToken += 1;
       synth.cancel();
       setStatus("Stopped");
       setCurrentPhrase("Stopped");
+      setCurrentMode("Stopped");
+      currentUtterance = null;
+      activeText = "";
+      activePhrase = null;
+      activeLang = null;
+      activeVoice = null;
+      activeRateInput = null;
+      currentCharIndex = 0;
+      lastBoundaryIndex = 0;
     });
 
+    document.getElementById("slowerBtn").addEventListener("click", () => {
+      if (!activeRateInput) return;
+      const nextRate = Math.max(0.5, Number(activeRateInput.value) - 0.1);
+      restartFromCurrentPosition(nextRate);
+    });
+
+    document.getElementById("fasterBtn").addEventListener("click", () => {
+      if (!activeRateInput) return;
+      const nextRate = Math.min(1.5, Number(activeRateInput.value) + 0.1);
+      restartFromCurrentPosition(nextRate);
+    });
+
+    document.getElementById("backWordBtn").addEventListener("click", goBackOneWord);
+
+    englishRateInput.addEventListener("input", () => {
+      updateRateLabels();
+      if (activeRateInput === englishRateInput && activeLang === "en-US" && currentUtterance) {
+        restartFromCurrentPosition(Number(englishRateInput.value));
+      }
+    });
+
+    spanishRateInput.addEventListener("input", () => {
+      updateRateLabels();
+      if (activeRateInput === spanishRateInput && activeLang === "es-ES" && currentUtterance) {
+        restartFromCurrentPosition(Number(spanishRateInput.value));
+      }
+    });
+
+    updateRateLabels();
     loadVoices();
+
     if ("onvoiceschanged" in synth) {
       synth.onvoiceschanged = loadVoices;
     }
+
+    setTimeout(loadVoices, 500);
+
     if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/LOTG/sw.js", { scope: "/LOTG/" });
-}
+      navigator.serviceWorker.register("/LOTG/sw.js", { scope: "/LOTG/" });
+    }
   </script>
 </body>
 </html>
