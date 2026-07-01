@@ -1,20 +1,11 @@
 {
   "name": "Spanish Trainer",
   "short_name": "Spanish Trainer",
-  "start_url": "./",
+  "id": "/LOTG/",
+  "start_url": "/LOTG/index.html",
+  "scope": "/LOTG/",
   "display": "standalone",
   "background_color": "#f5f7fb",
   "theme_color": "#0f766e",
-  "icons": [
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "icons": []
 }
