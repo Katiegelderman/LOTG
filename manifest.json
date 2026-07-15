@@ -1,13 +1,15 @@
 {
-  "name": "LOTG",
+  "id": "/LOTG/",
+  "name": "Spanish Trainer",
   "short_name": "LOTG",
-  "description": "Learn languages on the go!",
+  "description": "Practice Spanish through listening, one drive at a time.",
   "start_url": "/LOTG/",
   "scope": "/LOTG/",
   "display": "standalone",
   "background_color": "#f5efe6",
   "theme_color": "#6f8f73",
   "orientation": "portrait-primary",
+  "lang": "en",
   "icons": [
     {
       "src": "/LOTG/icons/icon-192.png",
@@ -20,6 +22,11 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/LOTG/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }
