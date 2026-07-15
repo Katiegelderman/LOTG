@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LOTG</title>
   <meta name="theme-color" content="#6f8f73" />
+  <meta name="description" content="Practice Spanish through listening, one drive at a time." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="LOTG" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="manifest" href="/LOTG/manifest.json" />
+  <link rel="apple-touch-icon" href="/LOTG/icons/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,7 +48,7 @@
     }
 
     .app {
-      max-width: 860px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 20px 16px 48px;
     }
@@ -77,7 +80,7 @@
 
     .subhead {
       margin: 12px 0 0;
-      max-width: 36rem;
+      max-width: 40rem;
       color: var(--muted);
       font-size: 16px;
       line-height: 1.6;
@@ -186,7 +189,7 @@
     }
 
     textarea {
-      min-height: 270px;
+      min-height: 230px;
       resize: vertical;
       line-height: 1.5;
     }
@@ -195,6 +198,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
     .controls-grid-3 {
@@ -222,13 +231,8 @@
       transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, color 140ms ease;
     }
 
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
 
     .primary {
       background: var(--accent);
@@ -236,9 +240,7 @@
       box-shadow: 0 10px 22px rgba(111, 143, 115, 0.26);
     }
 
-    .primary:hover {
-      background: var(--accent-dark);
-    }
+    .primary:hover { background: var(--accent-dark); }
 
     .secondary {
       background: rgba(255,255,255,0.72);
@@ -246,13 +248,9 @@
       border: 1px solid rgba(44, 36, 29, 0.10);
     }
 
-    .secondary:hover {
-      background: rgba(255,255,255,0.95);
-    }
+    .secondary:hover { background: rgba(255,255,255,0.95); }
 
-    .range-wrap {
-      margin-bottom: 12px;
-    }
+    .range-wrap { margin-bottom: 12px; }
 
     .value-row {
       display: flex;
@@ -276,12 +274,152 @@
       margin-top: 8px;
     }
 
+    .phrase-toolbar {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr auto;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: end;
+    }
+
+    .phrase-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+      max-height: 380px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .phrase-item {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(44, 36, 29, 0.08);
+      background: rgba(255,255,255,0.74);
+    }
+
+    .phrase-item.active {
+      border-color: rgba(111, 143, 115, 0.50);
+      box-shadow: 0 0 0 4px rgba(111, 143, 115, 0.10);
+      background: rgba(245, 252, 244, 0.96);
+    }
+
+    .phrase-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .phrase-number {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .phrase-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-btn {
+      width: auto;
+      min-height: 38px;
+      padding: 9px 12px;
+      font-size: 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.92);
+      color: var(--text);
+      border: 1px solid rgba(44, 36, 29, 0.10);
+      box-shadow: none;
+    }
+
+    .chip-btn:hover {
+      background: white;
+    }
+
+    .phrase-lines {
+      display: grid;
+      gap: 8px;
+    }
+
+    .phrase-click {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-height: 44px;
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(44, 36, 29, 0.08);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .phrase-click small {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .saved-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .status-note {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .ai-result {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(44, 36, 29, 0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
     @media (max-width: 720px) {
       .grid-2,
+      .grid-3,
       .controls-grid-3,
       .controls-grid-2,
-      .mini-grid {
+      .mini-grid,
+      .phrase-toolbar,
+      .saved-row {
         grid-template-columns: 1fr;
+      }
+
+      .phrase-top {
+        flex-direction: column;
       }
 
       .app {
@@ -303,7 +441,7 @@
     <section class="hero">
       <div class="eyebrow">Learn the Spanish language one drive at a time</div>
       <h1>Spanish Trainer</h1>
-      <p class="subhead">Practice your Spanish through listening. Gone are the days where drive time is wasted. Get 1% better 1 drive at a time.</p>
+      <p class="subhead">Practice your Spanish through listening. Jump to any phrase instantly, click any phrase to hear it, and build your own saved phrase library.</p>
     </section>
 
     <div class="stack">
@@ -334,7 +472,7 @@
         <p class="section-title">Playback controls</p>
         <div class="controls-grid-3">
           <button id="prevBtn" class="secondary">Back</button>
-          <button id="playBtn" class="primary">Play</button>
+          <button id="playBtn" class="primary">Play All</button>
           <button id="nextBtn" class="secondary">Next</button>
         </div>
         <div class="controls-grid-3" style="margin-top: 10px;">
@@ -347,7 +485,7 @@
           <button id="backWordBtn" class="secondary">Back One Word</button>
           <button id="fasterBtn" class="secondary">Faster</button>
         </div>
-        <p class="footer-note">Back and Next move phrase-by-phrase. Back One Word works within the current spoken line.</p>
+        <p class="footer-note">Use Back and Next for phrase navigation, or jump directly to any phrase below.</p>
       </section>
 
       <section class="card">
@@ -394,6 +532,50 @@
       </section>
 
       <section class="card">
+        <p class="section-title">AI phrase lookup</p>
+        <p class="hint">Search a new phrase, choose a Spanish region, then add it straight into your phrase list. This requires a secure backend endpoint, not a client-side API key.</p>
+        <div class="grid-2">
+          <div>
+            <label for="aiEnglishInput">English phrase</label>
+            <input id="aiEnglishInput" type="text" placeholder="Example: I need to pick up groceries." />
+          </div>
+          <div>
+            <label for="regionSelect">Spanish region</label>
+            <select id="regionSelect">
+              <option value="mexican">Mexican Spanish</option>
+              <option value="colombian">Colombian Spanish</option>
+              <option value="spain">Spain Spanish</option>
+              <option value="neutral">Neutral Spanish</option>
+            </select>
+          </div>
+        </div>
+        <div class="controls-grid-2">
+          <button id="aiTranslateBtn" class="primary">Translate Phrase</button>
+          <button id="addAiPhraseBtn" class="secondary">Add Result to List</button>
+        </div>
+        <div id="aiResultBox" class="ai-result" hidden>
+          <div class="pill" id="aiRegionLabel">Region</div>
+          <div><strong>English:</strong> <span id="aiEnglishResult"></span></div>
+          <div><strong>Spanish:</strong> <span id="aiSpanishResult"></span></div>
+          <div class="status-note" id="aiNote">Ready.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="section-title">Saved phrase sets</p>
+        <p class="hint">Save your personal phrase list on your device so it’s there next time you open the app on the same browser.</p>
+        <div class="saved-row">
+          <div>
+            <label for="profileName">Your profile name</label>
+            <input id="profileName" type="text" placeholder="Example: Alec" />
+          </div>
+          <button id="saveSetBtn" class="primary">Save My Set</button>
+          <button id="loadSetBtn" class="secondary">Load My Set</button>
+        </div>
+        <p class="status-note" id="saveStatus">Nothing saved yet.</p>
+      </section>
+
+      <section class="card">
         <p class="section-title">Phrase list</p>
         <p class="hint">Enter one phrase per line using this format: English | Spanish</p>
         <label for="phrases">Your phrases</label>
@@ -411,11 +593,31 @@ Good morning. | Buenos días.
 Good afternoon. | Buenas tardes.
 Good night. | Buenas noches.</textarea>
       </section>
+
+      <section class="card">
+        <p class="section-title">Jump and click</p>
+        <div class="phrase-toolbar">
+          <div>
+            <label for="jumpToPhrase">Jump to phrase number</label>
+            <input id="jumpToPhrase" type="number" min="1" step="1" placeholder="Example: 13" />
+          </div>
+          <div>
+            <label for="jumpPhraseSelect">Or choose phrase</label>
+            <select id="jumpPhraseSelect"></select>
+          </div>
+          <button id="jumpBtn" class="primary">Go</button>
+        </div>
+        <p class="hint">Click English or Spanish in any row to hear it instantly. Click Focus to set the current position there.</p>
+        <div id="phraseList" class="phrase-list"></div>
+      </section>
     </div>
   </main>
 
   <script>
     const synth = window.speechSynthesis;
+    const STORAGE_PREFIX = "lotg-user-set:";
+    const AI_ENDPOINT = "/LOTG/api/translate";
+
     const englishVoiceSelect = document.getElementById("englishVoice");
     const spanishVoiceSelect = document.getElementById("spanishVoice");
     const phrasesInput = document.getElementById("phrases");
@@ -430,6 +632,23 @@ Good night. | Buenas noches.</textarea>
     const statusValue = document.getElementById("statusValue");
     const currentModeValue = document.getElementById("currentModeValue");
     const positionValue = document.getElementById("positionValue");
+    const jumpToPhraseInput = document.getElementById("jumpToPhrase");
+    const jumpPhraseSelect = document.getElementById("jumpPhraseSelect");
+    const jumpBtn = document.getElementById("jumpBtn");
+    const phraseListEl = document.getElementById("phraseList");
+    const profileNameInput = document.getElementById("profileName");
+    const saveSetBtn = document.getElementById("saveSetBtn");
+    const loadSetBtn = document.getElementById("loadSetBtn");
+    const saveStatus = document.getElementById("saveStatus");
+    const aiEnglishInput = document.getElementById("aiEnglishInput");
+    const regionSelect = document.getElementById("regionSelect");
+    const aiTranslateBtn = document.getElementById("aiTranslateBtn");
+    const addAiPhraseBtn = document.getElementById("addAiPhraseBtn");
+    const aiResultBox = document.getElementById("aiResultBox");
+    const aiRegionLabel = document.getElementById("aiRegionLabel");
+    const aiEnglishResult = document.getElementById("aiEnglishResult");
+    const aiSpanishResult = document.getElementById("aiSpanishResult");
+    const aiNote = document.getElementById("aiNote");
 
     let voices = [];
     let stopped = false;
@@ -444,6 +663,7 @@ Good night. | Buenas noches.</textarea>
     let playbackToken = 0;
     let currentPhraseIndex = 0;
     let phraseAdvanceRequested = 0;
+    let latestAiPhrase = null;
 
     function setStatus(text) {
       statusValue.textContent = text;
@@ -527,18 +747,80 @@ Good night. | Buenas noches.</textarea>
         .filter(item => item.english && item.spanish);
     }
 
+    function phrasesToText(phrases) {
+      return phrases.map(item => `${item.english} | ${item.spanish}`).join("\n");
+    }
+
     function refreshPreview() {
       const phrases = parsePhrases(phrasesInput.value);
       if (!phrases.length) {
         setCurrentPhrase("Ready to start your phrase set.");
         setCurrentMode("None");
         updatePosition(0);
+        renderJumpOptions(phrases);
+        renderPhraseList(phrases);
         return;
       }
       currentPhraseIndex = Math.max(0, Math.min(currentPhraseIndex, phrases.length - 1));
       const phrase = phrases[currentPhraseIndex];
       setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
       updatePosition(phrases.length);
+      renderJumpOptions(phrases);
+      renderPhraseList(phrases);
+    }
+
+    function renderJumpOptions(phrases) {
+      jumpPhraseSelect.innerHTML = "";
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = phrases.length ? "Choose a phrase" : "No phrases loaded";
+      jumpPhraseSelect.appendChild(placeholder);
+
+      phrases.forEach((phrase, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `${index + 1}. ${phrase.english}`;
+        jumpPhraseSelect.appendChild(option);
+      });
+    }
+
+    function renderPhraseList(phrases) {
+      phraseListEl.innerHTML = "";
+
+      if (!phrases.length) {
+        phraseListEl.innerHTML = `<div class="hint">Add phrases above to create a clickable practice list.</div>`;
+        return;
+      }
+
+      phrases.forEach((phrase, index) => {
+        const item = document.createElement("div");
+        item.className = "phrase-item" + (index === currentPhraseIndex ? " active" : "");
+
+        item.innerHTML = `
+          <div class="phrase-top">
+            <div class="phrase-number">Phrase ${index + 1}</div>
+            <div class="phrase-actions">
+              <button class="chip-btn" data-action="focus" data-index="${index}">Focus</button>
+              <button class="chip-btn" data-action="play-pair" data-index="${index}">Play Pair</button>
+            </div>
+          </div>
+          <div class="phrase-lines">
+            <button class="phrase-click" data-action="play-english" data-index="${index}">
+              <small>English</small>${escapeHtml(phrase.english)}
+            </button>
+            <button class="phrase-click" data-action="play-spanish" data-index="${index}">
+              <small>Spanish</small>${escapeHtml(phrase.spanish)}
+            </button>
+          </div>
+        `;
+        phraseListEl.appendChild(item);
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     function wait(ms) {
@@ -563,6 +845,14 @@ Good night. | Buenas noches.</textarea>
       activeVoice = null;
       activeRateInput = null;
       currentCharIndex = 0;
+    }
+
+    function getSpanishSpeechLang() {
+      const region = regionSelect.value;
+      if (region === "mexican") return "es-MX";
+      if (region === "colombian") return "es-CO";
+      if (region === "spain") return "es-ES";
+      return "es-ES";
     }
 
     function speakText(text, voice, lang, rate, startIndex = 0, rateInputRef = null, token = playbackToken) {
@@ -655,10 +945,79 @@ Good night. | Buenas noches.</textarea>
       setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
       setCurrentMode("Ready");
       updatePosition(phrases.length);
+      renderPhraseList(phrases);
 
       if (currentUtterance) {
         phraseAdvanceRequested = offset;
         synth.cancel();
+      }
+    }
+
+    function jumpToPhrase(index) {
+      const phrases = parsePhrases(phrasesInput.value);
+      if (!phrases.length) return;
+      currentPhraseIndex = Math.max(0, Math.min(phrases.length - 1, index));
+      const phrase = phrases[currentPhraseIndex];
+      setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
+      setCurrentMode("Ready");
+      updatePosition(phrases.length);
+      jumpPhraseSelect.value = String(currentPhraseIndex);
+      jumpToPhraseInput.value = String(currentPhraseIndex + 1);
+      renderPhraseList(phrases);
+    }
+
+    async function speakSingle(text, lang, rateInput, voiceSelect, modeLabel) {
+      playbackToken += 1;
+      const token = playbackToken;
+      stopped = false;
+      paused = false;
+      synth.cancel();
+      setStatus("Playing");
+      setCurrentMode(modeLabel);
+
+      const voice = getVoiceByName(voiceSelect.value);
+      await speakText(text, voice, lang, Number(rateInput.value), 0, rateInput, token).catch(console.error);
+      if (token === playbackToken) {
+        setStatus("Idle");
+      }
+    }
+
+    async function playPhrasePair(index) {
+      const phrases = parsePhrases(phrasesInput.value);
+      const phrase = phrases[index];
+      if (!phrase) return;
+
+      currentPhraseIndex = index;
+      updatePosition(phrases.length);
+      renderPhraseList(phrases);
+      setCurrentPhrase(`${phrase.english} / ${phrase.spanish}`);
+
+      playbackToken += 1;
+      const token = playbackToken;
+      stopped = false;
+      paused = false;
+      synth.cancel();
+      setStatus("Playing");
+
+      const englishVoice = getVoiceByName(englishVoiceSelect.value);
+      const spanishVoice = getVoiceByName(spanishVoiceSelect.value);
+      const delay = Number(delayMsInput.value);
+
+      try {
+        setCurrentMode("English");
+        await speakText(phrase.english, englishVoice, "en-US", Number(englishRateInput.value), 0, englishRateInput, token);
+        if (token !== playbackToken) return;
+        await wait(delay);
+
+        setCurrentMode("Spanish");
+        await speakText(phrase.spanish, spanishVoice, getSpanishSpeechLang(), Number(spanishRateInput.value), 0, spanishRateInput, token);
+        if (token !== playbackToken) return;
+
+        setStatus("Idle");
+        setCurrentMode("Ready");
+      } catch (error) {
+        console.error(error);
+        setStatus("Playback error");
       }
     }
 
@@ -686,6 +1045,7 @@ Good night. | Buenas noches.</textarea>
 
       currentPhraseIndex = Math.max(0, Math.min(currentPhraseIndex, phrases.length - 1));
       updatePosition(phrases.length);
+      renderPhraseList(phrases);
       setStatus("Playing");
 
       try {
@@ -693,6 +1053,7 @@ Good night. | Buenas noches.</textarea>
           const phrase = phrases[currentPhraseIndex];
           phraseAdvanceRequested = 0;
           updatePosition(phrases.length);
+          renderPhraseList(phrases);
 
           for (let i = 0; i < englishRepeats; i++) {
             if (stopped || token !== playbackToken) return;
@@ -720,7 +1081,7 @@ Good night. | Buenas noches.</textarea>
 
             setCurrentMode(`Spanish ${i + 1} of ${spanishRepeats}`);
             setCurrentPhrase(phrase.spanish);
-            await speakText(phrase.spanish, spanishVoice, "es-ES", Number(spanishRateInput.value), 0, spanishRateInput, token);
+            await speakText(phrase.spanish, spanishVoice, getSpanishSpeechLang(), Number(spanishRateInput.value), 0, spanishRateInput, token);
 
             if (phraseAdvanceRequested !== 0) break;
             if (stopped || token !== playbackToken) return;
@@ -739,10 +1100,128 @@ Good night. | Buenas noches.</textarea>
         setCurrentPhrase("Nice work — you made it through the phrase set.");
         setCurrentMode("Complete");
         updatePosition(phrases.length);
+        renderPhraseList(phrases);
       } catch (error) {
         setStatus("Playback error");
         console.error(error);
       }
+    }
+
+    function getProfileKey() {
+      const name = profileNameInput.value.trim();
+      if (!name) return null;
+      return STORAGE_PREFIX + name.toLowerCase();
+    }
+
+    function saveCurrentSet() {
+      const key = getProfileKey();
+      if (!key) {
+        saveStatus.textContent = "Enter a profile name first.";
+        return;
+      }
+      const payload = {
+        profileName: profileNameInput.value.trim(),
+        phrases: phrasesInput.value,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem(key, JSON.stringify(payload));
+      saveStatus.textContent = `Saved phrase set for ${payload.profileName}.`;
+    }
+
+    function loadCurrentSet() {
+      const key = getProfileKey();
+      if (!key) {
+        saveStatus.textContent = "Enter a profile name first.";
+        return;
+      }
+      const raw = localStorage.getItem(key);
+      if (!raw) {
+        saveStatus.textContent = `No saved phrase set found for ${profileNameInput.value.trim()}.`;
+        return;
+      }
+      try {
+        const payload = JSON.parse(raw);
+        phrasesInput.value = payload.phrases || "";
+        currentPhraseIndex = 0;
+        refreshPreview();
+        saveStatus.textContent = `Loaded saved phrase set for ${payload.profileName}.`;
+      } catch {
+        saveStatus.textContent = "Could not read the saved phrase set.";
+      }
+    }
+
+    async function translatePhraseWithAI() {
+      const english = aiEnglishInput.value.trim();
+      const region = regionSelect.value;
+
+      if (!english) {
+        aiResultBox.hidden = false;
+        aiRegionLabel.textContent = "Missing phrase";
+        aiEnglishResult.textContent = "";
+        aiSpanishResult.textContent = "";
+        aiNote.textContent = "Enter an English phrase first.";
+        return;
+      }
+
+      aiTranslateBtn.disabled = true;
+      aiResultBox.hidden = false;
+      aiRegionLabel.textContent = region;
+      aiEnglishResult.textContent = english;
+      aiSpanishResult.textContent = "";
+      aiNote.textContent = "Looking up translation...";
+
+      try {
+        const response = await fetch(AI_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ english, region })
+        });
+
+        if (!response.ok) {
+          throw new Error("Translation endpoint not available.");
+        }
+
+        const data = await response.json();
+        latestAiPhrase = {
+          english: data.english?.trim() || english,
+          spanish: data.spanish?.trim() || "",
+          region: data.region || region
+        };
+
+        aiRegionLabel.textContent = latestAiPhrase.region;
+        aiEnglishResult.textContent = latestAiPhrase.english;
+        aiSpanishResult.textContent = latestAiPhrase.spanish || "No translation returned.";
+        aiNote.textContent = "Translation ready.";
+      } catch (error) {
+        latestAiPhrase = null;
+        aiRegionLabel.textContent = region;
+        aiEnglishResult.textContent = english;
+        aiSpanishResult.textContent = "";
+        aiNote.textContent = "The AI translation endpoint is not set up yet. Add the backend step below first.";
+        console.error(error);
+      } finally {
+        aiTranslateBtn.disabled = false;
+      }
+    }
+
+    function addLatestAiPhrase() {
+      if (!latestAiPhrase || !latestAiPhrase.english || !latestAiPhrase.spanish) {
+        aiNote.textContent = "Translate a phrase first, then add it.";
+        aiResultBox.hidden = false;
+        return;
+      }
+
+      const current = parsePhrases(phrasesInput.value);
+      current.push({
+        english: latestAiPhrase.english,
+        spanish: latestAiPhrase.spanish
+      });
+
+      phrasesInput.value = phrasesToText(current);
+      currentPhraseIndex = current.length - 1;
+      refreshPreview();
+      jumpToPhrase(currentPhraseIndex);
+      aiNote.textContent = "Phrase added to your list.";
     }
 
     document.getElementById("playBtn").addEventListener("click", playList);
@@ -801,12 +1280,65 @@ Good night. | Buenas noches.</textarea>
 
     spanishRateInput.addEventListener("input", () => {
       updateRateLabels();
-      if (activeRateInput === spanishRateInput && activeLang === "es-ES" && currentUtterance) {
+      if (activeRateInput === spanishRateInput && activeLang && activeLang.startsWith("es") && currentUtterance) {
         restartFromCurrentPosition(Number(spanishRateInput.value));
       }
     });
 
-    phrasesInput.addEventListener("input", refreshPreview);
+    phrasesInput.addEventListener("input", () => {
+      currentPhraseIndex = 0;
+      refreshPreview();
+    });
+
+    jumpBtn.addEventListener("click", () => {
+      const phrases = parsePhrases(phrasesInput.value);
+      if (!phrases.length) return;
+
+      const typed = Number(jumpToPhraseInput.value);
+      if (Number.isInteger(typed) && typed >= 1 && typed <= phrases.length) {
+        jumpToPhrase(typed - 1);
+        return;
+      }
+
+      if (jumpPhraseSelect.value !== "") {
+        jumpToPhrase(Number(jumpPhraseSelect.value));
+      }
+    });
+
+    jumpPhraseSelect.addEventListener("change", () => {
+      if (jumpPhraseSelect.value === "") return;
+      jumpToPhrase(Number(jumpPhraseSelect.value));
+    });
+
+    phraseListEl.addEventListener("click", async (event) => {
+      const target = event.target.closest("button[data-action]");
+      if (!target) return;
+
+      const action = target.getAttribute("data-action");
+      const index = Number(target.getAttribute("data-index"));
+      const phrases = parsePhrases(phrasesInput.value);
+      const phrase = phrases[index];
+      if (!phrase) return;
+
+      if (action === "focus") {
+        jumpToPhrase(index);
+      } else if (action === "play-pair") {
+        await playPhrasePair(index);
+      } else if (action === "play-english") {
+        currentPhraseIndex = index;
+        refreshPreview();
+        await speakSingle(phrase.english, "en-US", englishRateInput, englishVoiceSelect, "English");
+      } else if (action === "play-spanish") {
+        currentPhraseIndex = index;
+        refreshPreview();
+        await speakSingle(phrase.spanish, getSpanishSpeechLang(), spanishRateInput, spanishVoiceSelect, "Spanish");
+      }
+    });
+
+    saveSetBtn.addEventListener("click", saveCurrentSet);
+    loadSetBtn.addEventListener("click", loadCurrentSet);
+    aiTranslateBtn.addEventListener("click", translatePhraseWithAI);
+    addAiPhraseBtn.addEventListener("click", addLatestAiPhrase);
 
     updateRateLabels();
     loadVoices();
